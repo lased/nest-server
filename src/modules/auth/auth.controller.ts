@@ -13,13 +13,12 @@ export class AuthController {
     @Res({ passthrough: true }) response: Response,
     @Body() loginDto: LoginDto,
   ) {
-    const { accessToken, refreshToken } = await this.authService.login(
-      loginDto,
-    );
+    const { accessToken, refreshToken, permissions } =
+      await this.authService.login(loginDto);
 
     this.setCookie(response, refreshToken);
 
-    return { accessToken };
+    return { accessToken, permissions };
   }
 
   @Get('refresh')
@@ -33,13 +32,12 @@ export class AuthController {
       // secure: true,
     });
 
-    const { accessToken, refreshToken } = await this.authService.refresh(
-      request.cookies?.refreshToken,
-    );
+    const { accessToken, refreshToken, permissions } =
+      await this.authService.refresh(request.cookies?.refreshToken);
 
     this.setCookie(response, refreshToken);
 
-    return { accessToken };
+    return { accessToken, permissions };
   }
 
   private setCookie(response: Response, refreshToken: string) {

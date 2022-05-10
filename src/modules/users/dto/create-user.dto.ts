@@ -1,4 +1,6 @@
-import { IsString } from 'class-validator';
+import { IsEnum, IsOptional, IsString } from 'class-validator';
+
+import Permission from 'src/permission';
 
 export class CreateUserDto {
   @IsString()
@@ -6,4 +8,8 @@ export class CreateUserDto {
 
   @IsString()
   password: string;
+
+  @IsOptional()
+  @IsEnum(Permission, { each: true })
+  permissions: Permission[];
 }

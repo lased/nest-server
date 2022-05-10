@@ -15,7 +15,7 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-    const user = this.usersRepo.findOne({
+    const user = await this.usersRepo.findOne({
       where: { username: createUserDto.username },
     });
 

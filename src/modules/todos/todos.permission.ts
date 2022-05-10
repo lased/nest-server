@@ -1,0 +1,6 @@
+export enum TodoPermission {
+  CREATE_TODO = 'CREATE_TODO',
+  READ_TODO = 'READ_TODO',
+  UPDATE_TODO = 'UPDATE_TODO',
+  DELETE_TODO = 'DELETE_TODO',
+}

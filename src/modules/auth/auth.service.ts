@@ -22,13 +22,13 @@ export class AuthService {
     const user = await this.usersService.findByName(loginDto.username);
 
     if (!user) {
-      throw new NotFoundError('User not found');
+      throw new NotFoundException('User not found');
     }
 
     const match = await compare(loginDto.password, user.password);
 
     if (match) {
-      return this.generateTokens(user);
+      return { ...this.generateTokens(user), permissions: user.permissions };
     }
 
     throw new UnauthorizedException('Username or password are not valid');
@@ -51,12 +51,12 @@ export class AuthService {
       throw new NotFoundException('User not found');
     }
 
-    return this.generateTokens(user);
+    return { ...this.generateTokens(user), permissions: user.permissions };
   }
 
-  private generateTokens({ username, id }: User) {
+  private generateTokens({ username, id, permissions }: User) {
     const accessToken = this.jwtService.sign(
-      { username, id },
+      { username, id, permissions },
       { expiresIn: '100m', secret: 'Access secret' },
     );
     const refreshToken = this.jwtService.sign(
