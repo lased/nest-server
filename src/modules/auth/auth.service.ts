@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcrypt';
 import { NotFoundError } from 'rxjs';
@@ -44,7 +48,7 @@ export class AuthService {
     const user = await this.usersService.findById(decoded.id);
 
     if (!user) {
-      throw new NotFoundError('User not found');
+      throw new NotFoundException('User not found');
     }
 
     return this.generateTokens(user);
@@ -53,11 +57,11 @@ export class AuthService {
   private generateTokens({ username, id }: User) {
     const accessToken = this.jwtService.sign(
       { username, id },
-      { expiresIn: '10s', secret: 'Access secret' },
+      { expiresIn: '100m', secret: 'Access secret' },
     );
     const refreshToken = this.jwtService.sign(
       { id },
-      { expiresIn: '1m', secret: 'Refresh secret' },
+      { expiresIn: '1000m', secret: 'Refresh secret' },
     );
 
     return { accessToken, refreshToken };
