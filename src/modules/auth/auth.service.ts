@@ -57,11 +57,11 @@ export class AuthService {
   private generateTokens({ username, id, permissions }: User) {
     const accessToken = this.jwtService.sign(
       { username, id, permissions },
-      { expiresIn: '100m', secret: 'Access secret' },
+      { expiresIn: '1m', secret: 'Access secret' },
     );
     const refreshToken = this.jwtService.sign(
       { id },
-      { expiresIn: '1000m', secret: 'Refresh secret' },
+      { expiresIn: '1d', secret: 'Refresh secret' },
     );
 
     return { accessToken, refreshToken };
