@@ -11,7 +11,8 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { JwtAuthGuard } from '../auth/auth.guard';
+import { JwtAuthGuard, Permissions } from '../auth/auth.guard';
+import { UserPermission } from './users.permission';
 
 @Controller('users')
 @UseGuards(JwtAuthGuard)
@@ -39,6 +40,7 @@ export class UsersController {
   }
 
   @Delete(':id')
+  @Permissions(UserPermission.DELETE_USER)
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);
   }
