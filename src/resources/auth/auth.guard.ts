@@ -1,5 +1,6 @@
 import {
   ExecutionContext,
+  ForbiddenException,
   Injectable,
   SetMetadata,
   UnauthorizedException,
@@ -34,6 +35,14 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       return true;
     }
 
-    return requiredRoles.every((role) => user.permissions?.includes(role));
+    const authorized = requiredRoles.every((role) =>
+      user.permissions?.includes(role),
+    );
+
+    if (!authorized) {
+      throw new ForbiddenException('Access denied');
+    }
+
+    return authorized;
   }
 }

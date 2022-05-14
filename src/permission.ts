@@ -1,5 +1,5 @@
-import { TodoPermission } from './modules/todos/todos.permission';
-import { UserPermission } from './modules/users/users.permission';
+import { TodoPermission } from './resources/todos/todos.permission';
+import { UserPermission } from './resources/users/users.permission';
 
 const Permission = {
   ...TodoPermission,
