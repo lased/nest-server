@@ -8,7 +8,7 @@ import {
 
 export abstract class HttpExceptionResponse {
   status: number;
-  message: string;
+  message: string[];
 }
 
 @Catch(HttpException)
@@ -18,10 +18,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const response = ctx.getResponse<Response>();
     const status = exception.getStatus();
     const exceptionResponse = exception.getResponse() as { message: string[] };
-    let message = exception.message;
+    let message = [exception.message];
 
     if (exceptionResponse.message instanceof Array) {
-      message = exceptionResponse.message[0] || '';
+      message = exceptionResponse.message || [];
     }
 
     const json: HttpExceptionResponse = { status, message };
